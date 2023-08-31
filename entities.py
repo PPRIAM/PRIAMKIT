@@ -1,4 +1,5 @@
 from animations import AnimationManager
+from inventory import Inventory
 
 class Entity:
     def __init__(self, name:str=None, position=[0, 0], velocity=[1, 1]) -> None:
@@ -8,6 +9,7 @@ class Entity:
         self.rect = self.image.get_rect(center=position)
         self.movement = [0, 0]
         self.velocity = velocity
+        self.inventory = Inventory()
 
     def render(self, display):
         try:

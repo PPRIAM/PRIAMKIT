@@ -56,6 +56,6 @@ class Animation:
 
     def get_frame(self, flip=False):
         if not flip:
-            return self.frames[int(self.current_frame)]
+            return self.frames[int(self.current_frame)-1]
         else:
             return pygame.tansform.flip(self.frames[int(self.current)], flip, False)
