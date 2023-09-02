@@ -1,6 +1,6 @@
 {
-    "fire_rate": 200,
-    "magazine_capacity": 1000,
+    "fire_rate": 50,
+    "magazine_capacity": 15,
     "range": 100,
     "type": "automatic"
 }

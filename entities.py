@@ -10,6 +10,7 @@ class Entity:
         self.movement = [0, 0]
         self.velocity = velocity
         self.inventory = Inventory()
+        self.inventory.add_element('normal', 1000)
 
     def render(self, display):
         try:

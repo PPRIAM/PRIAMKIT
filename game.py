@@ -1,4 +1,4 @@
-import pygame, sys, time, entities, weapon, random
+import pygame, sys, time, entities, weapon, random, utils
 
 pygame.init()
 
@@ -7,6 +7,7 @@ class Game:
         self.screen_size = screen_size
         self.screen = pygame.display.set_mode(self.screen_size)
         pygame.display.set_caption(title)
+        pygame.mouse.set_visible(0)
 
         self.clock = pygame.time.Clock()
         self.fps = fps
@@ -18,10 +19,13 @@ class Game:
         # Shiro
         self.shiro = entities.Entity("Player", position=[self.display.get_width()//2, self.display.get_height()//2])
 
-        self.mps5 = weapon.Gun(self.shiro.rect, "mps5", weapon.Bullet("normal"))
-        self.normalBullet = weapon.Bullet("normal")
+        self.mps5 = weapon.Gun(self.shiro, "mps5", "normal")
 
         self.mouse = {button:False for button in ["left","middle","right"]}
+
+        self.crosshair = utils.load_image("data/crosshair/crosshair_1.png")
+        self.crosshair.set_colorkey('black')
+        self.crosshair_rect = self.crosshair.get_rect(center=pygame.mouse.get_pos())
 
     def quit(self):
         pygame.quit()
@@ -30,7 +34,7 @@ class Game:
     def run(self):
         while True:
             self.clock.tick(self.fps)
-
+            self.crosshair_rect = self.crosshair.get_rect(center=[pygame.mouse.get_pos()[0]//2, pygame.mouse.get_pos()[1]//2])
             self.display.fill((0, 0, 0))
 
             self.shiro.render(self.display)
@@ -42,9 +46,10 @@ class Game:
 
             if self.mps5.config['type'] == 'automatic':
                 if self.mouse['left']:
-                    self.mps5.shoot(self.display)
-            self.mps5.add_bullets(random.randint(-1, 1))
-            self.mps5.set_amno(1000)
+                    self.mps5.add_bullets([pygame.mouse.get_pos()[0]//2, pygame.mouse.get_pos()[1]//2])
+            self.mps5.shoot(self.display, pygame.time.get_ticks())
+
+            self.display.blit(self.crosshair, self.crosshair_rect)
                 
             self.screen.blit(pygame.transform.scale(self.display, self.screen_size), (0, 0))
 
