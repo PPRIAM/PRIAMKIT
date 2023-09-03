@@ -44,11 +44,9 @@ class Gun:
         display.blit(pygame.transform.flip(pygame.transform.rotate(self.image, math.degrees(-angle)), False, self.flip), self.rect)
 
     def add_bullets(self, target, offset=0):
-        # [[Orgin pos], [pos], [speed], angle, offset]
-        # [     0,        1,      2,      3,      4]
         if pygame.time.get_ticks()-self.last_shoot > self.config['fire_rate']:
             if self.magazine > 0:
-                self.bullets.append(Bullet(self.bullet, [self.rect.centerx+self.rect.width//2*math.cos(self.angle), self.rect.centery+self.rect.height//2*math.sin(self.angle)], self.angle))
+                self.bullets.append(Bullet(self.bullet, [self.rect.centerx+self.rect.width/2*math.cos(self.angle), self.rect.centery+self.rect.height/2*math.sin(self.angle)], self.angle))
                 self.magazine -= 1
                 self.last_shoot = pygame.time.get_ticks()
 
@@ -58,36 +56,18 @@ class Gun:
     def reload(self):
         if self.magazine < self.config['magazine_capacity'] and self.holder.inventory.inventory[self.bullet] > 0:
             bulletToReload = min(self.config['magazine_capacity']-self.magazine, self.holder.inventory.inventory[self.bullet])
-            reloadedBullets = self.holder.inventory.inventory[self.bullet] - bulletToReload
-            self.magazine += reloadedBullets
+            print(bulletToReload)
+            self.magazine += bulletToReload
+            self.holder.inventory.inventory[self.bullet] -= bulletToReload
 
     def shoot(self, display, current_time):
-
-        # new_bullet = Bullet(self.bullet, [self.rect.centerx+self.rect.width/2, self.rect.centery+self.rect.height/2], self.angle)
-
         for bullet in self.bullets:
             bullet.render(display)
             bullet.update()
 
             if bullet.isTooFar(self.config['range']):
                 self.bullets.remove(bullet)
-        """
-         last_shoot = pygame.time.get_ticks()
-        for bullet in self.bullets:
-            # Move the Bullets
-            if pygame.time.get_ticks()-last_shoot > self.config['fire_rate']:
-                last_shoot = pygame.time.get_ticks()
-                bullet[1][0] += bullet[2]*math.cos(bullet[3])
-                bullet[1][1] += bullet[2]*math.sin(bullet[3])-bullet[4]
-
-            # Display the bullets
-                display.blit(pygame.transform.rotate(self.bullet.image, math.degrees(-bullet[3])), bullet[1])
-
-            # Remove the bullets
-                if utils.magnitude(pygame.rect.Rect(bullet[0][0], bullet[0][1], 1, 1), pygame.rect.Rect(bullet[1][0], bullet[1][1], 1, 1)) > self.config['range']:
-                    self.bullets.remove(bullet)
-        """       
-
+        
 class Bullet:
     def __init__(self, name, origin, angle, base_path="data/bullet") -> None:
         self.name = name

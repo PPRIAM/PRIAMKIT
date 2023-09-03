@@ -6,11 +6,11 @@
 
 ## Entity ✅
 
-## Gun
+## Gun ✅
 
-## Gun Config file
+## Gun Config file ✅
 
-## Bullet
+## Bullet ✅
 
 ## Dungeon Generator
 
@@ -25,3 +25,5 @@
 ## Impact Frames
 
 ## Dialog System
+
+## Inventory system ✅

@@ -17,7 +17,7 @@ class Game:
         self.display = pygame.Surface([320, 240])
 
         # Shiro
-        self.shiro = entities.Entity("Player", position=[self.display.get_width()//2, self.display.get_height()//2])
+        self.shiro = entities.Entity("Player", position=[self.display.get_width()//2, self.display.get_height()//2], weapon_name="mps5")
 
         self.mps5 = weapon.Gun(self.shiro, "mps5", "normal")
 
@@ -40,14 +40,14 @@ class Game:
             self.shiro.render(self.display)
             self.shiro.update()
 
-            self.mps5.update([pygame.mouse.get_pos()[0]//2, pygame.mouse.get_pos()[1]//2])
-            self.mps5.render(self.display)
+            if self.shiro.weapon:
+                self.shiro.weapon.update([pygame.mouse.get_pos()[0]//2, pygame.mouse.get_pos()[1]//2])
             #print(self.mps5.bullets)
 
-            if self.mps5.config['type'] == 'automatic':
-                if self.mouse['left']:
-                    self.mps5.add_bullets([pygame.mouse.get_pos()[0]//2, pygame.mouse.get_pos()[1]//2])
-            self.mps5.shoot(self.display, pygame.time.get_ticks())
+                if self.shiro.weapon.config['type'] == 'automatic':
+                    if self.mouse['left']:
+                        self.shiro.weapon.add_bullets([pygame.mouse.get_pos()[0]//2, pygame.mouse.get_pos()[1]//2])
+                self.shiro.weapon.shoot(self.display, pygame.time.get_ticks())
 
             self.display.blit(self.crosshair, self.crosshair_rect)
                 
@@ -62,7 +62,7 @@ class Game:
                     if event.key == pygame.K_d: self.shiro.movement[0] += 1
                     if event.key == pygame.K_w: self.shiro.movement[1] -= 1
                     if event.key == pygame.K_s: self.shiro.movement[1] += 1
-                    if event.key == pygame.K_r: self.mps5.reload()
+                    if event.key == pygame.K_r: self.shiro.weapon.reload()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a: self.shiro.movement[0] += 1
                     if event.key == pygame.K_d: self.shiro.movement[0] -= 1
