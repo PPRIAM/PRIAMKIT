@@ -34,7 +34,7 @@ class Animation:
             self.config = utils.load_json(base_path+'/'+animation_name+'/config.json')
         except:
             self.config = {
-                "animation_speed":0.25,
+                "framerate":1,
                 "loop": True,
                 "done": False
             }
@@ -44,13 +44,14 @@ class Animation:
         return [pygame.image.load(base_path+'/'+animation_name+'/'+image) for image in os.listdir(base_path+animation_name) if image.endswith('.png')]
     
     def play(self):
+        animation_speed = self.config["framerate"]/len(self.frames)
         if self.config["loop"]:
-            self.current_frame += self.config["animation_speed"]
+            self.current_frame += animation_speed
             if int(self.current_frame) > len(self.frames)-1:
                 self.current_frame = 0
         else:
             if not self.config["done"]:
-                self.current_frame += self.config["animation_speed"]
+                self.current_frame += animation_speed
                 if self.current_frame > len(self.frames):
                     self.config["done"] = True
 
