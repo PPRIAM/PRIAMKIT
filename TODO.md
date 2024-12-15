@@ -27,3 +27,5 @@
 ## Dialog System
 
 ## Inventory system ✅
+
+## Weapon system update
